@@ -1,18 +1,26 @@
+require 'date'
+require 'json'
 require 'net/http'
 require 'sinatra/base'
-require 'json'
+require 'socket'
 
 class HealthDemo < Sinatra::Application
+
+  @host = Socket.gethostname
 
   def self.live_info
     live = {}
     live['live'] = File.exist?('/tmp/live')
+    live['hostname'] = @host
+    live['timestamp'] = Time.now.iso8601
     live
   end
 
   def self.ready_info
     ready = {}
     ready['ready'] = File.exist?('/tmp/ready')
+    ready['hostname'] = @host
+    ready['timestamp'] = Time.now.iso8601
     ready
   end
 
