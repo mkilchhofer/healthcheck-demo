@@ -1,7 +1,7 @@
 FROM ruby:slim
 
 RUN apt-get update -qq && \
-    apt-get install -y build-essential
+    apt-get install -y build-essential curl
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
@@ -15,4 +15,5 @@ RUN touch /tmp/ready /tmp/live
 
 ADD . $APP_HOME
 
+USER www-data
 CMD [ "rackup", "-o", "0.0.0.0"]
