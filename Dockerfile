@@ -10,10 +10,10 @@ WORKDIR $APP_HOME
 ADD Gemfile* $APP_HOME/
 RUN bundle install
 
-# App is healthy by default
-RUN touch /tmp/ready /tmp/live
-
 ADD . $APP_HOME
 
 USER www-data
+# App is healthy by default
+RUN touch /tmp/ready /tmp/live
+
 CMD [ "rackup", "-o", "0.0.0.0"]
