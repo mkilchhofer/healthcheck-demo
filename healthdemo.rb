@@ -29,6 +29,15 @@ class HealthDemo < Sinatra::Application
     "Hello world\n"
   end
 
+  get '/.well-known/env' do
+    tmp = {}
+    ENV.map do |k,v|
+      tmp[k] = v
+    end
+    content_type :json
+    tmp.to_json
+  end
+
   get '/.well-known/live' do
     tmp = HealthDemo.live_info
     content_type :json
