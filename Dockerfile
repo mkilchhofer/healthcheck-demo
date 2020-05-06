@@ -1,4 +1,4 @@
-FROM ruby:slim
+FROM ruby:slim as builder
 
 RUN apt-get update -qq && \
     apt-get install -y build-essential curl
@@ -9,6 +9,11 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 RUN bundle install
+
+FROM ruby:slim
+
+COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
+COPY --from=builder /app/ /app/
 
 ADD . $APP_HOME
 
