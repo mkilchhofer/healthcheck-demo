@@ -29,7 +29,7 @@ class HealthDemo < Sinatra::Application
     "Hello world\n"
   end
 
-  get '/.well-known/env' do
+  get '/env' do
     tmp = {}
     ENV.map do |k,v|
       tmp[k] = v
@@ -38,7 +38,7 @@ class HealthDemo < Sinatra::Application
     tmp.to_json
   end
 
-  get '/.well-known/live' do
+  get '/health/live' do
     tmp = HealthDemo.live_info
     content_type :json
     if(tmp['live'])
@@ -49,7 +49,7 @@ class HealthDemo < Sinatra::Application
     tmp.to_json
   end
 
-  get '/.well-known/ready' do
+  get '/health/ready' do
     tmp = HealthDemo.ready_info
     content_type :json
     if(tmp['ready'])
