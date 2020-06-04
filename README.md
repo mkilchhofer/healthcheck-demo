@@ -70,3 +70,37 @@ spec:
             path: /health/ready
           periodSeconds: 1
 ```
+
+Now you can play with these endpoints:
+
+```bash
+$ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
+www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/ready
+```
+
+After 3 seconds you see that this pod is not ready anymore (`0/1`):
+
+```bash
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+healthcheck-demo-745554966d-f9jvz   0/1     Running   0          4m45s
+healthcheck-demo-745554966d-ghxqk   1/1     Running   0          4m39s
+healthcheck-demo-745554966d-xwhp5   1/1     Running   0          4m42s
+```
+
+Now let's delete the file `/tmp/live` inside the pod:
+
+```bash
+$ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
+www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/live
+```
+
+After around 25 seconds, Kubernetes restarts this pod:
+
+```bash
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+healthcheck-demo-745554966d-f9jvz   1/1     Running   1          6m52s
+healthcheck-demo-745554966d-ghxqk   1/1     Running   0          6m46s
+healthcheck-demo-745554966d-xwhp5   1/1     Running   0          6m49s
+```
