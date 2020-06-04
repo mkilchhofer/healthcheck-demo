@@ -49,7 +49,7 @@ spec:
         app: healthcheck-demo
     spec:
       containers:
-      - name: tomcat-sample
+      - name: app
         image: docker.io/kicm/healthcheck-demo
         ports:
         - containerPort: 9292
@@ -71,14 +71,14 @@ spec:
           periodSeconds: 1
 ```
 
-Now you can play with these endpoints:
+Now you can play with these endpoints. Let's make one Pod "not ready":
 
 ```bash
 $ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
 www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/ready
 ```
 
-After 3 seconds you see that this pod is not ready anymore (`0/1`):
+After 3 seconds you see that this Pod is not ready anymore (`0/1`):
 
 ```bash
 $ kubectl get pods
@@ -88,14 +88,14 @@ healthcheck-demo-745554966d-ghxqk   1/1     Running   0          4m39s
 healthcheck-demo-745554966d-xwhp5   1/1     Running   0          4m42s
 ```
 
-Now let's delete the file `/tmp/live` inside the pod:
+Let's make it unhealthy now: delete the file `/tmp/live` inside the Pod:
 
 ```bash
 $ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
 www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/live
 ```
 
-After around 25 seconds, Kubernetes restarts this pod:
+After around 25 seconds, Kubernetes restarts this Pod:
 
 ```bash
 $ kubectl get pods
