@@ -16,3 +16,57 @@ To simulate that the app in unhealthy, we can delete the files in `/tmp`:
 
 * `/` returns a simple `Hello world\n` (for curl and webbrowsers)
 * `/env` returns all environment variables as JSON
+
+## Usage
+
+### Start the image with plain docker
+
+```bash
+$ docker run -d --rm -p 9292:9292 docker.io/kicm/healthcheck-demo
+```
+
+Open your browser and play with the different endpoints:
+* http://localhost:9292/
+* http://localhost:9292/env
+* http://localhost:9292/health/live
+* http://localhost:9292/health/ready
+
+### Example deployment in Kubernetes
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcheck-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: healthcheck-demo
+  template:
+    metadata:
+      labels:
+        app: healthcheck-demo
+    spec:
+      containers:
+      - name: tomcat-sample
+        image: docker.io/kicm/healthcheck-demo
+        ports:
+        - containerPort: 9292
+          name: http
+        env:
+          - name: FOO
+            value: bar
+          - name: HELLO
+            value: world
+        livenessProbe:
+          httpGet:
+            port: http
+            path: /health/live
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            port: http
+            path: /health/ready
+          periodSeconds: 1
+```
