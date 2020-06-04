@@ -78,7 +78,7 @@ $ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
 www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/ready
 ```
 
-After 3 seconds you see that this Pod is not ready anymore (`0/1`):
+After 3 seconds you see that this Pod is not ready anymore (`0/1` in column `READY`):
 
 ```bash
 $ kubectl get pods
@@ -95,7 +95,7 @@ $ kubectl exec -ti healthcheck-demo-745554966d-f9jvz bash
 www-data@healthcheck-demo-745554966d-f9jvz:/$ rm /tmp/live
 ```
 
-After around 25 seconds, Kubernetes restarts this Pod:
+After around 15 seconds, Kubernetes will restart this Pod and everything is fine again:
 
 ```bash
 $ kubectl get pods
