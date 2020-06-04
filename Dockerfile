@@ -21,4 +21,5 @@ USER www-data
 # App is healthy by default
 RUN touch /tmp/ready /tmp/live
 
+EXPOSE 9292/tcp
 CMD [ "rackup", "-o", "0.0.0.0"]
