@@ -1,5 +1,7 @@
 # Demo App to play with Kubernetes health checks
 
+⚠️ This project is not actively maintained. As an alternative, use: https://github.com/kubernetes-up-and-running/kuard
+
 The ruby sinatra app exposes two health endpoints:
 
 * `/health/ready`
